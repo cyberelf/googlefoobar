@@ -5,6 +5,8 @@ def solution(pegs):
     :type pegs: int[]
     :rtype: int[]
     """
+    if len(pegs) < 2:
+        return [-1, -1]
     remain = 0
     sign = -1
     for peg in pegs:
@@ -12,10 +14,15 @@ def solution(pegs):
         sign = -sign
     remain = remain * 2 + pegs[0] + sign * pegs[-1]
     weight = -sign+2
-    if remain < 0 or (remain % weight != 0):
+    if remain <= 0 or (remain % weight != 0):
         return [-1, -1]
     else:
-        return [2*remain, weight]
+        radius = 2*remain/weight
+        for i in range(1, len(pegs)):
+            radius = pegs[i]-pegs[i-1]-radius
+            if radius <= 0:
+                return [-1, -1]
+        return [2*remain/weight, 1]
 
 if __name__=="__main__":
     print(solution([4, 30, 50]))
