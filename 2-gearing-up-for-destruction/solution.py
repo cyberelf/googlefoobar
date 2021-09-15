@@ -14,7 +14,7 @@ def solution(pegs):
         sign = -sign
     remain = remain * 2 + pegs[0] + sign * pegs[-1]
     weight = -sign+2
-    if remain <= 0 or (remain % weight != 0):
+    if remain <= 0:
         return [-1, -1]
     else:
         radius = 2*remain/weight
@@ -22,7 +22,10 @@ def solution(pegs):
             radius = pegs[i]-pegs[i-1]-radius
             if radius <= 0:
                 return [-1, -1]
-        return [2*remain/weight, 1]
+        if remain % weight != 0:
+            return [2*remain, weight]
+        else:
+            return [2*remain/weight, 1]
 
 if __name__=="__main__":
     print(solution([4, 30, 50]))
