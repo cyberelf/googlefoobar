@@ -1,0 +1,3 @@
+1. compare with normal DP
+2. DP will consume too much memory: 2^1000 * 4 bytes of memory, try devide DP into small segments, e.g. 10 bits per segment.
+   Need to prove segment local optimization is also global optimization.
