@@ -31,4 +31,4 @@ def solution(l):
 if __name__=="__main__":
     print(solution([1, 2, 3, 4, 5, 6]))
     print(solution([1, 2, 3, 4, 5, 10]))
-    print(solution([1, 1, 1, 1]))
+    print(solution([1, 1, 1, 1]))   # still not working correctly
