@@ -11,3 +11,8 @@ Solution to the 2nd one is blossom algorithm, which is a path augmenting algorit
 * https://www.bilibili.com/video/BV1bE411d7Py?p=122
 * https://blog.csdn.net/birdmanqin/article/details/100160999
 * https://en.wikipedia.org/wiki/Blossom_algorithm
+
+
+There are two other version of solutions on the internet, and both of them are shorter. Need further study:
+* https://github.com/arinkverma/google-foobar/blob/master/4.2_distract_grauds.py
+* https://replit.com/@dayfine/Distract-the-Guard-foobar
