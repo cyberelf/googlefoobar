@@ -16,3 +16,5 @@ Solution to the 2nd one is blossom algorithm, which is a path augmenting algorit
 There are two other version of solutions on the internet, and both of them are shorter. Need further study:
 * https://github.com/arinkverma/google-foobar/blob/master/4.2_distract_grauds.py
 * https://replit.com/@dayfine/Distract-the-Guard-foobar
+
+ They both use Hungarian algorithm instead of Blossom algorithm, that means this graph is bipartite.?
