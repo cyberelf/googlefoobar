@@ -20,13 +20,11 @@ def solution(num_buns, num_required):
     # minimum ocurrance of a key
     min_occur = num_buns-num_required+1
     combination([], num_buns, 0, min_occur)
-    i = 0
-    j = -1
+    j = 0
     for c in combinations:
-        if i % min_occur == 0:
-            j += 1
         for s in c:
             bun_keys[s].append(j)
+        j += 1
     return bun_keys
 
 if __name__=="__main__":
