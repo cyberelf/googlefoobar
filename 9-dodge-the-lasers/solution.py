@@ -1,13 +1,33 @@
-import math 
+import math
+from decimal import Decimal, getcontext
 
 def solution(str_n):
     """
     :type str_n: string
     :rtype: string
     """
-    n = float(str_n)
-    m = (1+n)*n/2
-    return m*(2**0.5)-n/2
+    solution_math_stack(str_n)
+
+def solution_math_stack(str_n):
+    """
+    :type str_n: string
+    :rtype: string
+    """
+    # solution from https://math.stackexchange.com/questions/2052179/how-to-find-sum-i-1n-left-lfloor-i-sqrt2-right-rfloor-a001951-a-beatty-s?newreg=cb33d186ad14497e9324f81b55236b86
+    getcontext().prec = 101
+    n = int(str_n)
+    w = Decimal(2) ** Decimal('0.5') - 1
+
+    def s(cur_n):
+        if cur_n > 0:
+            next_n = int(w*cur_n)
+            mp = cur_n*next_n+cur_n*(cur_n+1)/2-next_n*(next_n+1)/2
+            return mp-s(next_n)
+        else:
+            return 0
+
+    return "%d" % s(n)
+        
 
 def estimation(str_n):
     """
@@ -15,6 +35,7 @@ def estimation(str_n):
     :rtype: string
     """
     # according to Weyl's equidistribution theorem, the solution is approximately equals to the middle value of min and max, i.e. m*(2**0.5)-n/2
+    # Answer 2 to this question explains this in detail: https://math.stackexchange.com/questions/2052179/how-to-find-sum-i-1n-left-lfloor-i-sqrt2-right-rfloor-a001951-a-beatty-s.
     n = float(str_n)
     m = (1+n)*n/2
     return m*(2**0.5)-n/2
@@ -58,13 +79,40 @@ def solution_brute_op(str_n):
         d += rm
     return int(m*(2**0.5)-d)
 
+def count_ints(n):
+    """For y=x*(2^(1/2)-1), count the number of each integer y when x equals to n. """
+    w = 2**(1/2)-1
+    r = [0]
+    cur = 0
+    for i in range(1, n+1):
+        y = int(i*w)
+        if y==cur:
+            r[-1] += 1
+        else:
+            cur = y
+            r.append(1)
+    return r
+
+def find_repeat():
+    """Multiply 2^(1/2)-1 with natural numbers until find the smallest int, whose decimal part equal to this number"""
+    w = 2**(1/2)-1
+    t = w + w
+    i = 2
+    while w != t:
+        t += w
+        if t > 1:
+            t -= 1
+        i += 1
+    return i
+
 if __name__=="__main__":
     #print(solution_between(6))
     #print(solution_brute(6))
     #print(solution_brute_op('5'))
 
-    for i in range(1,1001):
-        c = solution_brute_op(i)
-        s = solution(i)
-        if c != round(s):
-            print("{} {} {}".format(i, c, s))
+    # for i in range(1,10000):
+    #     c = solution_brute(i)
+    #     s = solution(i)
+    #     if c != s:
+    #         print("{} {} {}".format(i, c, s))
+    print(solution_math_stack(10**100))
