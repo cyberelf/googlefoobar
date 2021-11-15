@@ -1,7 +1,7 @@
 ## Preperation
 I did some estimation (function `estimation` and `solution_between`) and use them as the validation function.
 
-## Intuitions
+## First puzzle
 ### Intuition 1
 
 I tried to find some other form of representation of sqrt(2), like this:
@@ -40,11 +40,26 @@ Continue in this manner. (End)
 
 ### Intuition 4
 
-Rayleigh's theorem is the answer to this question.
+Beatty sequence and Rayleigh's theorem is the answer to this question.
 
-https://math.stackexchange.com/questions/2052179/how-to-find-sum-i-1n-left-lfloor-i-sqrt2-right-rfloor-a001951-a-beatty-s?newreg=cb33d186ad14497e9324f81b55236b86
+* https://en.wikipedia.org/wiki/Beatty_sequence#Rayleigh_theorem
+* https://math.stackexchange.com/questions/2052179/how-to-find-sum-i-1n-left-lfloor-i-sqrt2-right-rfloor-a001951-a-beatty-s?newreg=cb33d186ad14497e9324f81b55236b86
 
-## Optimisation
+#### Beatty sequence
+In mathematics, a Beatty sequence (or homogeneous Beatty sequence) is the sequence of integers found by taking the floor of the positive multiples of a positive irrational number.
+
+#### Rayleigh theorem
+
+@MISC {2053713,
+    TITLE = {How to find $\sum_{i=1}^n\left\lfloor i\sqrt{2}\right\rfloor$ A001951 A Beatty sequence: a(n) = floor(n*sqrt(2)).},
+    AUTHOR = {mercio (https://math.stackexchange.com/users/17445/mercio)},
+    HOWPUBLISHED = {Mathematics Stack Exchange},
+    NOTE = {URL:https://math.stackexchange.com/q/2053713 (version: 2020-02-10)},
+    EPRINT = {https://math.stackexchange.com/q/2053713},
+    URL = {https://math.stackexchange.com/q/2053713}
+}
+
+## Second puzzle
 Floating point precision also affects the answer. Use `Decimal` to solve this.
 
 ## Others Notes about this question
