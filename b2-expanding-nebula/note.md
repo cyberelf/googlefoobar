@@ -43,3 +43,9 @@ Tips:
 10. Pop one state from the current cell stack.
 11. If there is a upper cell, move current cell pointer up. If not, move the pointer to the bottom of the left column.
 12. If current cell is the last one(upper left), state count++ and go to the former cell, then goto step 8.
+
+
+Tune:
+1. Add lower right corner check. Not Necessary. Wrong, This is a dulicate work.
+2. Add adjacent check when pushing in new solution. Improves a little.
+3. 
