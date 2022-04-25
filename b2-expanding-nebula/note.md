@@ -29,6 +29,8 @@ Tips:
         - T0-T2, T0-T3, T1-T2, T1-T3, T2-T0, T3-T1
     - False above True
         - F0-T2, F0-T3, F3-T1, F4-T0, F5-T2, F5-T3, F6-T0, F7-T1, F8-T0, F9-T1
+    - False above False
+        - F0-F10, F1-F3, F1-F4, F1-F5, F2-F3, F2-F4, F2-F5, F3-F1, F3-F8, F3-F9, F4-F2, F4-F6, F4-F7, F5-F0, F5-F10, F6-
     - True left False
         - 
 
