@@ -25,10 +25,12 @@ Tips:
 3. Find all state matches for all conjunction blocks.
     - True above False
         - T0-F0, T0-F10, T1-F0, T1-F10, T2-F2, T2-F6, T2-F7, T3-F1, T3-F8， T3-F9
+    - True above True
+        - T0-T2, T0-T3, T1-T2, T1-T3, T2-T0, T3-T1
     - False above True
         - F0-T2, F0-T3, F3-T1, F4-T0, F5-T2, F5-T3, F6-T0, F7-T1, F8-T0, F9-T1
     - True left False
-        - ...
+        - 
 
 4. Maintain a 3D array, with the first two dimensions as the input array, and the third dimension as a stack which stores all possible states.
 5. Start from lower right cell, and set initial state_count to 0.

@@ -1,40 +1,117 @@
 
-def solution(w, h, s):
-    # We are going to need the gcd for all pairs of numbers (a,b)
-    # with a<= w and b <= h. So, let's compute them all.
-    n = max(w, h)
-    gcdTable = buildGCDTable(n)
-    # We will also need the factorials of all numbers 1,2,...,max(w,h)
-    factorialTable = buildFactorialTable(n)
-    # Consider G=S_w\times S_h, acting on X=W\times H, where
-    # W={1,2,...,w}, H={1,2,...,h}, S_w and S_h are the symmetric group
-    # acting as permutations of W and H, respectively.
-    # Each matrix is a function f\in S^X, f:X to S, where
-    # S={1,2,...,s}.
-    # G acts on S^X, by (gf)(x)=f(gx) for g\in G and f\in S^X.
-    # We need to compute the orbits of G in S^X.
-    # Polya's enumeration theorem, tell us how to obtain it
-    # from the Cycle Index Polynomial of the group action.
-    # See https://franklinvp.github.io/2020-06-05-PolyaFooBar/
-    # for the formula.
-    grid = 0
-    for cpw in partitionsAndCycleCount(w, factorialTable):
-        for cph in partitionsAndCycleCount(h, factorialTable):
-            m = cpw[1] * cph[1]
-            grid += m * (s ** sum([sum([gcd(i, j, gcdTable) for i in cpw[0]]) for j in cph[0]]))
-    return str(grid // (factorial(w, factorialTable) * factorial(h, factorialTable)))
+def solution(states):
+    true_states = (1, 2, 4, 8)
+    false_states = (0, 3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15)
+
+    # relationship below
+    # x blow y
+    below = lambda x, y: ((x & 12) >> 2) == (y & 3)
+    fbt = list((f, t) for t in true_states for f in false_states if below(f,t))
+    fbf = list((f1, f2) for f2 in false_states for f1 in false_states if below(f1, f2))
+    tbt = list((t1, t2) for t2 in true_states for t1 in true_states if below(t1, t2))
+    tbf = list((t, f) for f in false_states for t in true_states if below(t, f))
+    b_relationship = {
+        (True, False): tbf,
+        (False, False): fbf,
+        (True, True): tbt,
+        (False, True): fbt
+    }
+    # right
+    # x to the right of y
+    right = lambda x, y: (y & 5) == ((x & 10) >> 1)
+    frt = list((f, t) for t in true_states for f in false_states if right(f,t))
+    frf = list((f1, f2) for f2 in false_states for f1 in false_states if right(f1, f2))
+    trt = list((t1, t2) for t2 in true_states for t1 in true_states if right(t1, t2))
+    trf = list((t, f) for f in false_states for t in true_states if right(t, f))
+
+    r_relationship = {
+        (True, False): trf,
+        (False, False): frf,
+        (True, True): trt,
+        (False, True): frt
+    }
+
+    # move to lower right corner
+    x = len(states)-1
+    y = len(states[0])-1
+    count = 0
+    solution_stacks = []
+    for _ in range(x+1):
+        stacks = []
+        for _ in range(y+1):
+            stacks.append([])
+        solution_stacks.append(stacks)
+    if states[x][y] == True:
+        solution_stacks[x][y] = list(true_states)
+    else:
+        solution_stacks[x][y] = list(false_states)
+    
+    while True:
+        if x == y == 0:
+            # solution found
+            count += len(solution_stacks[x][y])
+            solution_stacks[x][y] = []
+            y = 1
+            solution_stacks[x][y].pop()
+        elif len(solution_stacks[x][y]) == 0:
+            # poping stage
+            if y < len(states[0])-1:
+                y += 1
+            elif x < len(states)-1:
+                x += 1
+                y = 0
+            else:
+                return count
+            solution_stacks[x][y].pop()
+        else:
+            # pushing stage
+            # current solutions
+            curss = set()
+            if y > 0:
+                rstate = states[x][y]
+                rsolution = solution_stacks[x][y][-1]
+                y -= 1
+                cstate = states[x][y]
+                for r in r_relationship.get((rstate, cstate)):
+                    if r[0] == rsolution:
+                        curss.add(r[1])
+            else:
+                x -= 1
+                y = len(states[0])-1
+                cstate = states[x][y]
+                if cstate:
+                    curss = set(true_states)
+                else:
+                    curss = set(false_states)
+
+            if x < len(states)-1:
+                bstate = states[x+1][y]
+                bsolution = solution_stacks[x+1][y][-1]
+                bss = set()
+                for b in b_relationship.get((bstate, cstate)):
+                    if b[0] == bsolution:
+                        bss.add(b[1])
+                # rewind the whole row if state is not possible
+                if len(bss) == 0:
+                    x += 1
+                    solution_stacks[x][y].pop()
+                    continue
+                curss = curss.intersection(bss)
+            solution_stacks[x][y] = list(curss)
 
 
-def test_solution():
+def test_solution1():
+    s2 = solution([[True, False, True], [False, True, False], [True, False, True]])
+    assert(s2==4)
+
+def test_solution2():
     s1 = solution([[True, True, False, True, False, True, False, True, True, False], 
                   [True, True, False, False, False, False, True, True, True, False],
                   [True, True, False, False, False, False, False, False, False, True], 
                   [False, True, False, False, False, False, True, True, False, False]])
     assert(s1==11567)
-    
-    s2 = solution([[True, False, True], [False, True, False], [True, False, True]])
-    assert(s2==4)
-    
+
+def test_solution3():
     s3 = solution([[True, False, True, False, False, True, True, True], 
                    [True, False, True, False, False, False, True, False], 
                    [True, True, True, False, False, False, True, False], 
