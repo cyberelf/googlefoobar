@@ -10,11 +10,22 @@ def solution(states):
     fbf = list((f1, f2) for f2 in false_states for f1 in false_states if below(f1, f2))
     tbt = list((t1, t2) for t2 in true_states for t1 in true_states if below(t1, t2))
     tbf = list((t, f) for f in false_states for t in true_states if below(t, f))
+    
+    def get_rdict(relationship):
+        d = {}
+        for r in relationship:
+            if r[0] in d:
+                d[r[0]].add(r[1])
+            else:
+                d[r[0]] = set()
+                d[r[0]].add(r[1])
+        return d
+
     b_relationship = {
-        (True, False): tbf,
-        (False, False): fbf,
-        (True, True): tbt,
-        (False, True): fbt
+        (True, False): get_rdict(tbf),
+        (False, False): get_rdict(fbf),
+        (True, True): get_rdict(tbt),
+        (False, True): get_rdict(fbt)
     }
     # right
     # x to the right of y
@@ -25,10 +36,10 @@ def solution(states):
     trf = list((t, f) for f in false_states for t in true_states if right(t, f))
 
     r_relationship = {
-        (True, False): trf,
-        (False, False): frf,
-        (True, True): trt,
-        (False, True): frt
+        (True, False): get_rdict(trf),
+        (False, False): get_rdict(frf),
+        (True, True): get_rdict(trt),
+        (False, True): get_rdict(frt)
     }
 
     # move to lower right corner
@@ -72,9 +83,9 @@ def solution(states):
                 rsolution = solution_stacks[x][y][-1]
                 y -= 1
                 cstate = states[x][y]
-                for r in r_relationship.get((rstate, cstate)):
-                    if r[0] == rsolution:
-                        curss.add(r[1])
+                rdict = r_relationship.get((rstate, cstate))
+                if rsolution in rdict:
+                    curss = rdict[rsolution]
             else:
                 x -= 1
                 y = len(states[0])-1
@@ -88,9 +99,9 @@ def solution(states):
                 bstate = states[x+1][y]
                 bsolution = solution_stacks[x+1][y][-1]
                 bss = set()
-                for b in b_relationship.get((bstate, cstate)):
-                    if b[0] == bsolution:
-                        bss.add(b[1])
+                bdict = b_relationship.get((bstate, cstate))
+                if bsolution in bdict:
+                    bss = bdict[bsolution]
                 # rewind the whole row if state is not possible
                 if len(bss) == 0:
                     x += 1
