@@ -5,35 +5,11 @@ Tips:
 1. Start from the lower right cell.
     - If it's True, there will be 4 possible initial states.
     - If it's False, there will be 1(zero True)+4(three True)+6(2 True)=11 possible states.
-2. Number all the states
-    - For True
+2. Number all the states can be represented with a four bit number, which orders from upper left to lower right.
+    - For True, it's 0001, 0010, 0100, 1000
+    - For False, it's the remaining numbers from 0 to 15
 
-        ```bash
-          0:    1:    2:    3:
-          o.    .o    ..    ..
-          ..    ..    o.    .o
-        ```
-
-    - For False
-
-        ```bash
-          0:    1:    2:    3:    4:    5:    6:    7:    8:    9:    10:
-          ..    .o    o.    oo    oo    oo    o.    o.    .o    .o    ..
-          ..    oo    oo    .o    o.    ..    o.    .o    o.    .o    oo
-        ```
-
-3. Find all state matches for all conjunction blocks.
-    - True above False
-        - T0-F0, T0-F10, T1-F0, T1-F10, T2-F2, T2-F6, T2-F7, T3-F1, T3-F8， T3-F9
-    - True above True
-        - T0-T2, T0-T3, T1-T2, T1-T3, T2-T0, T3-T1
-    - False above True
-        - F0-T2, F0-T3, F3-T1, F4-T0, F5-T2, F5-T3, F6-T0, F7-T1, F8-T0, F9-T1
-    - False above False
-        - F0-F10, F1-F3, F1-F4, F1-F5, F2-F3, F2-F4, F2-F5, F3-F1, F3-F8, F3-F9, F4-F2, F4-F6, F4-F7, F5-F0, F5-F10, F6-
-    - True left False
-        - 
-
+3. Find all possible conjunction numbers.
 4. Maintain a 3D array, with the first two dimensions as the input array, and the third dimension as a stack which stores all possible states.
 5. Start from lower right cell, and set initial state_count to 0.
 6. Push all possible states into the stack, if there is no available state, go to the former cell.
@@ -48,4 +24,7 @@ Tips:
 Tune:
 1. Add lower right corner check. Not Necessary. Wrong, This is a dulicate work.
 2. Add adjacent check when pushing in new solution. Improves a little.
-3. 
+
+Solution:
+What I'm missing is the parallelization. The answer to this is to do the calculation column by column which will reduce the 
+time complexity from $O(2^{(M\times N)})$ to $O(2^{(2\times N)}+M\times 2^N\times N)$ where M>N. Space complexity from $O(M\times N)$ to $O(2^N)$.
